@@ -33,8 +33,7 @@ const PRODUCTS: Product[] = [
     description:
       "Roasted garlic, aged Parmesan, and sweet basil woven into every slice. Deeply savory.",
     price: 13.0,
-    image:
-      "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=400&q=75",
+    image: "/bread/garlic-parmesan-basil.jpg",
   },
   {
     name: "Cheddar",
@@ -48,8 +47,7 @@ const PRODUCTS: Product[] = [
     description:
       "Sharp cheddar married with mellow roasted garlic — our most-requested savory loaf.",
     price: 13.0,
-    image:
-      "https://images.unsplash.com/photo-1585478259715-1c195ae2b568?w=400&q=75",
+    image: "/bread/cheddar-garlic.jpg",
   },
   {
     name: "Croissant",
