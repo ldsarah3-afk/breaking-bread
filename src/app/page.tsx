@@ -81,12 +81,12 @@ export default function HomePage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-        const data = await res.json();
+        const data = await res.json().catch(() => ({}));
         if (data.url) {
           window.location.href = data.url;
           return;
         }
-        throw new Error(data.error ?? "Checkout failed");
+        throw new Error(data.error ?? "Checkout failed. Please try again.");
       } else {
         const res = await fetch("/api/order", {
           method: "POST",
