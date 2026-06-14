@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+
+export const dynamic = "force-dynamic";
+import { getSupabase } from "@/lib/supabase";
 import { resend, FROM_EMAIL, OWNER_EMAIL } from "@/lib/resend";
 import type { OrderPayload } from "@/types";
 
 export async function POST(req: NextRequest) {
   const body: OrderPayload = await req.json();
 
-  const { error } = await supabase.from("orders").insert({
+  const { error } = await getSupabase().from("orders").insert({
     first_name: body.first_name,
     last_name: body.last_name,
     email: body.email,
