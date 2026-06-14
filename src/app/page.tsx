@@ -11,8 +11,7 @@ const PRODUCTS: Product[] = [
     description:
       "Our signature naturally-leavened loaf. A 48-hour ferment yields a blistered crust and a custardy, open crumb.",
     price: 10.0,
-    image:
-      "https://images.unsplash.com/photo-1585478259715-1c195ae2b568?w=400&q=75",
+    image: "/bread/classic-loaf.jpg",
   },
   {
     name: "Cinnamon Raisin",
@@ -115,8 +114,7 @@ const PROMOS = [
   {
     t: "The Classic",
     d: "Our signature country sourdough",
-    image:
-      "https://images.unsplash.com/photo-1585478259715-1c195ae2b568?w=600&q=75",
+    image: "/bread/classic-loaf.jpg",
   },
 ];
 
