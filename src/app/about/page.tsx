@@ -13,9 +13,9 @@ export default function AboutPage() {
           priority
           unoptimized
         />
-        <div className="absolute inset-0 bg-[#3d2b1f]/60" />
+        <div className="absolute inset-0 bg-[#3a1c0e]/65" />
         <div className="relative z-10 text-center text-white px-6">
-          <p className="text-[#c9a87c] uppercase tracking-widest text-sm mb-3">
+          <p className="text-[#d98a3d] uppercase tracking-[0.2em] text-sm mb-3">
             Our Story
           </p>
           <h1 className="text-4xl sm:text-5xl font-bold">
@@ -26,11 +26,21 @@ export default function AboutPage() {
 
       {/* Story */}
       <section className="max-w-2xl mx-auto px-6 py-20 text-center">
-        <p className="text-[#3d2b1f] text-lg leading-relaxed">
-          Breaking Bread started in our home kitchen with a 5-year-old sourdough
-          starter and a deep belief that good bread takes time. Every loaf is
-          slow-fermented for 48 hours, hand-shaped, and baked in small batches —
-          never rushed, always real.
+        <p className="text-[#3a1c0e] text-lg leading-relaxed mb-6">
+          Breaking Bread began in our home kitchen with a living sourdough
+          starter — just flour and water, fed daily and kept alive — and a
+          conviction that real bread cannot be hurried.
+        </p>
+        <p className="text-[#3a1c0e] text-lg leading-relaxed mb-6">
+          Every loaf is naturally leavened, slow-fermented for 48 hours,
+          hand-shaped, and baked in small batches. No commercial yeast. No
+          artificial souring. No shortcuts. The fermentation does the work that
+          time was always meant to do — developing flavor, texture, and a crust
+          that crackles.
+        </p>
+        <p className="text-[#8a5733] text-lg leading-relaxed italic">
+          This is true sourdough — slow-fermented, made from scratch, and never
+          rushed like store-bought bread.
         </p>
       </section>
     </>
