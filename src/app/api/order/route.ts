@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabase } from "@/lib/supabase";
+import { getResend, FROM_EMAIL, OWNER_EMAIL } from "@/lib/resend";
+import type { OrderPayload } from "@/types";
 
 export const dynamic = "force-dynamic";
-import { getSupabase } from "@/lib/supabase";
-import { resend, FROM_EMAIL, OWNER_EMAIL } from "@/lib/resend";
-import type { OrderPayload } from "@/types";
 
 export async function POST(req: NextRequest) {
   const body: OrderPayload = await req.json();
+  const resend = getResend();
 
   const { error } = await getSupabase().from("orders").insert({
     first_name: body.first_name,

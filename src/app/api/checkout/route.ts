@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-
-export const dynamic = "force-dynamic";
 import Stripe from "stripe";
 import type { OrderPayload } from "@/types";
 
-// Set STRIPE_SECRET_KEY to your Stripe secret key
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   const body: OrderPayload = await req.json();
   const origin = req.headers.get("origin") ?? "http://localhost:3000";
+
+  // Set STRIPE_SECRET_KEY to your Stripe secret key
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
