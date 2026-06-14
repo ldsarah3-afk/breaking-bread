@@ -6,8 +6,8 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="relative h-[55vh] flex items-center justify-center">
         <Image
-          src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=900&q=80"
-          alt="Sourdough baking"
+          src="/bread/sarah-baking-16x9.png"
+          alt="Sarah baking sourdough by hand"
           fill
           className="object-cover"
           priority

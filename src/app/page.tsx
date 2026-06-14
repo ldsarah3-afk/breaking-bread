@@ -19,16 +19,14 @@ const PRODUCTS: Product[] = [
     description:
       "Plump raisins and ribbons of cinnamon folded through slow-fermented dough. Toasts beautifully.",
     price: 13.0,
-    image:
-      "https://images.unsplash.com/photo-1568471173242-461f0a730452?w=400&q=75",
+    image: "/bread/cinnamon-raisin.jpg",
   },
   {
     name: "Jalapeño Cheddar",
     description:
       "Sharp cheddar and fresh jalapeño baked through a tangy crumb. Gentle heat, melted pockets.",
     price: 13.0,
-    image:
-      "https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=400&q=75",
+    image: "/bread/jalapeno-cheddar.jpg",
   },
   {
     name: "Garlic, Parmesan & Basil",
@@ -43,8 +41,7 @@ const PRODUCTS: Product[] = [
     description:
       "Generous folds of sharp cheddar melted into a golden, open crumb. Pure comfort.",
     price: 13.0,
-    image:
-      "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=75",
+    image: "/bread/cheddar.jpg",
   },
   {
     name: "Cheddar Garlic",
@@ -59,16 +56,14 @@ const PRODUCTS: Product[] = [
     description:
       "Laminated with patience and real butter, leavened with our living starter. Shatteringly flaky.",
     price: 13.0,
-    image:
-      "https://images.unsplash.com/photo-1530610476181-d83430b64dcd?w=400&q=75",
+    image: "/bread/croissant.jpg",
   },
   {
     name: "Pizza Bread",
     description:
       "Tomato, herbs, and melted cheese baked into a pull-apart sourdough. A meal on its own.",
     price: 13.0,
-    image:
-      "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=75",
+    image: "/bread/pizza-bread.jpg",
   },
 ];
 
@@ -112,14 +107,12 @@ const PROMOS = [
   {
     t: "Savory Loaves",
     d: "Cheddar, garlic, jalapeño & more",
-    image:
-      "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=600&q=75",
+    image: "/bread/jalapeno-cheddar.jpg",
   },
   {
     t: "Sweet & Breakfast",
     d: "Cinnamon raisin & flaky croissants",
-    image:
-      "https://images.unsplash.com/photo-1530610476181-d83430b64dcd?w=600&q=75",
+    image: "/bread/croissant.jpg",
   },
   {
     t: "The Classic",
@@ -416,6 +409,44 @@ export default function HomePage() {
               <p className="text-[#8a5733] text-sm leading-relaxed">{step.d}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Our Story */}
+      <section className="bg-[#fbf1e5]">
+        <div className="max-w-6xl mx-auto px-6 py-20 grid lg:grid-cols-2 gap-12 items-center">
+          <div className="relative h-80 lg:h-[26rem] rounded-3xl overflow-hidden shadow-md">
+            <Image
+              src="/bread/sarah-baking-16x9.png"
+              alt="Sarah baking sourdough by hand"
+              fill
+              className="object-cover"
+              unoptimized
+            />
+          </div>
+          <div>
+            <p className="text-[#c0562b] uppercase tracking-[0.2em] text-sm font-semibold mb-2">
+              Our Story
+            </p>
+            <h2 className="text-4xl sm:text-5xl font-extrabold text-[#3a1c0e] mb-5">
+              Made by hand, in our home kitchen
+            </h2>
+            <p className="text-[#8a5733] text-lg leading-relaxed mb-4">
+              Every loaf starts with our living sourdough starter — just flour
+              and water, fed daily and kept alive. From there it&apos;s a
+              48-hour slow ferment, hand-shaped and baked in small batches.
+            </p>
+            <p className="text-[#8a5733] text-lg leading-relaxed mb-6">
+              No commercial yeast. No artificial souring. No shortcuts — just
+              real bread, made with patience and love.
+            </p>
+            <a
+              href="/about"
+              className="inline-block bg-[#3a1c0e] text-[#fdf2e4] px-7 py-3 rounded-full font-semibold hover:bg-[#5c3115] transition-colors"
+            >
+              Read our story →
+            </a>
+          </div>
         </div>
       </section>
 
