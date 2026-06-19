@@ -25,22 +25,36 @@ export default function AboutPage() {
       </section>
 
       {/* Story */}
-      <section className="max-w-2xl mx-auto px-6 py-20 text-center">
+      <section className="max-w-2xl mx-auto px-6 py-20">
+        <h2 className="text-3xl font-extrabold text-[#3a1c0e] mb-6 text-center">
+          Hi, I&apos;m Sarah.
+        </h2>
         <p className="text-[#3a1c0e] text-lg leading-relaxed mb-6">
-          Breaking Bread began in our home kitchen with a living sourdough
-          starter — just flour and water, fed daily and kept alive — and a
-          conviction that real bread cannot be hurried.
+          I&apos;ll be honest — I fell down the sourdough rabbit hole because of
+          TikTok. All those loaves, the gorgeous ones and the gloriously ugly
+          ones, and I was hooked. (I still turn the flops into memes, no shame.)
         </p>
         <p className="text-[#3a1c0e] text-lg leading-relaxed mb-6">
-          Every loaf is naturally leavened, slow-fermented for 48 hours,
-          hand-shaped, and baked in small batches. No commercial yeast. No
-          artificial souring. No shortcuts. The fermentation does the work that
-          time was always meant to do — developing flavor, texture, and a crust
-          that crackles.
+          But it became more than a hobby. I needed something that was{" "}
+          <em>mine</em> — a way to rebuild my strength, work through the hard
+          days, and put my whole self into something with my hands. Kneading
+          dough turned into my therapy and my workout all at once.
         </p>
-        <p className="text-[#8a5733] text-lg leading-relaxed italic">
-          This is true sourdough — slow-fermented, made from scratch, and never
-          rushed like store-bought bread.
+        <p className="text-[#3a1c0e] text-lg leading-relaxed mb-6">
+          It got real last Easter, when I baked loaves for the people I work
+          with. They cheered me on and kept telling me how good it was — and
+          somewhere in there, this stopped being a project and became Breaking
+          Bread.
+        </p>
+        <p className="text-[#3a1c0e] text-lg leading-relaxed mb-6">
+          Every loaf is made with care, real fermentation, and just a few honest
+          ingredients — because bread made that way simply tastes different. The
+          imperfect ones? Those are my favorites. They&apos;re proof a real
+          person made this, by hand, for you.
+        </p>
+        <p className="text-[#3a1c0e] text-xl italic font-medium border-l-4 border-[#c0562b] pl-4">
+          I put my fight into every loaf — and a whole lot of love. You&apos;ll
+          taste the difference.
         </p>
       </section>
     </>

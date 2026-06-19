@@ -397,22 +397,40 @@ export default function HomePage() {
               Our Story
             </p>
             <h2 className="text-4xl sm:text-5xl font-extrabold text-[#3a1c0e] mb-5">
-              Made by hand, in our home kitchen
+              Hi, I&apos;m Sarah.
             </h2>
             <p className="text-[#8a5733] text-lg leading-relaxed mb-4">
-              Every loaf starts with our living sourdough starter — just flour
-              and water, fed daily and kept alive. From there it&apos;s a
-              48-hour slow ferment, hand-shaped and baked in small batches.
+              I&apos;ll be honest — I fell down the sourdough rabbit hole because
+              of TikTok. All those loaves, the gorgeous ones and the gloriously
+              ugly ones, and I was hooked. (I still turn the flops into memes, no
+              shame.)
+            </p>
+            <p className="text-[#8a5733] text-lg leading-relaxed mb-4">
+              But it became more than a hobby. I needed something that was
+              <em> mine</em> — a way to rebuild my strength, work through the hard
+              days, and put my whole self into something with my hands.
+            </p>
+            <p className="text-[#8a5733] text-lg leading-relaxed mb-4">
+              It got real last Easter, when I baked loaves for the people I work
+              with. They cheered me on and kept telling me how good it was — and
+              somewhere in there, this stopped being a project and became
+              Breaking Bread.
             </p>
             <p className="text-[#8a5733] text-lg leading-relaxed mb-6">
-              No commercial yeast. No artificial souring. No shortcuts — just
-              real bread, made with patience and love.
+              Every loaf is made with care, real fermentation, and just a few
+              honest ingredients — because bread made that way simply tastes
+              different. The imperfect ones? Those are my favorites. They&apos;re
+              proof a real person made this, by hand, for you.
+            </p>
+            <p className="text-[#3a1c0e] text-xl italic font-medium border-l-4 border-[#c0562b] pl-4 mb-7">
+              I put my fight into every loaf — and a whole lot of love. You&apos;ll
+              taste the difference.
             </p>
             <a
               href="/about"
               className="inline-block bg-[#3a1c0e] text-[#fdf2e4] px-7 py-3 rounded-full font-semibold hover:bg-[#5c3115] transition-colors"
             >
-              Read our story →
+              Read more →
             </a>
           </div>
         </div>
