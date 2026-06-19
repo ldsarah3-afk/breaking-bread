@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import type { Product, CartItem, OrderPayload } from "@/types";
+import { AnimatedHero } from "@/components/AnimatedHero";
 
 const PRODUCTS: Product[] = [
   {
@@ -194,36 +195,7 @@ export default function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative min-h-[88vh] flex items-center justify-center text-center text-white">
-        <Image
-          src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1400&q=80"
-          alt="Freshly baked sourdough"
-          fill
-          className="object-cover"
-          priority
-          unoptimized
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#3a1c0e]/70 via-[#3a1c0e]/60 to-[#3a1c0e]/85" />
-        <div className="relative z-10 px-6 max-w-3xl mx-auto py-24">
-          <span className="inline-block bg-[#d98a3d]/25 border border-[#d98a3d] text-[#fdf2e4] text-xs uppercase tracking-[0.2em] px-4 py-1.5 rounded-full mb-7">
-            Real sourdough — never rushed
-          </span>
-          <h1 className="text-5xl sm:text-7xl font-extrabold leading-[1.05] mb-6">
-            Slow-fermented sourdough, baked to order
-          </h1>
-          <p className="text-[#fdf2e4]/90 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto">
-            Naturally leavened with a living starter, fermented for 48 hours, and
-            hand-shaped in small batches. Real bread — not the store-bought
-            imitation.
-          </p>
-          <a
-            href="#order"
-            className="inline-block mt-9 bg-[#c0562b] text-[#fdf2e4] px-10 py-4 rounded-full font-semibold text-lg hover:bg-[#a3471f] transition-colors shadow-lg"
-          >
-            Build Your Order
-          </a>
-        </div>
-      </section>
+      <AnimatedHero />
 
       {/* Trust strip */}
       <div className="bg-[#3a1c0e] text-[#fdf2e4]">
