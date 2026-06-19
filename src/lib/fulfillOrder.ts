@@ -26,17 +26,23 @@ export async function fulfillOrder(order: OrderPayload) {
 
   const resend = getResend();
 
-  await resend.emails.send({
+  const customerEmail = await resend.emails.send({
     from: FROM_EMAIL,
     to: order.email,
     subject: "Your Breaking Bread order is confirmed!",
     text: `Hi ${order.first_name},\n\nYour order is confirmed!\n\n${itemLines}\n\nTotal: $${order.total.toFixed(2)}\nPickup date: ${order.pickup_date}\n\nSee you soon!\n— Breaking Bread`,
   });
+  if (customerEmail.error) {
+    console.error("Resend error (customer email):", customerEmail.error);
+  }
 
-  await resend.emails.send({
+  const ownerEmail = await resend.emails.send({
     from: FROM_EMAIL,
     to: OWNER_EMAIL,
     subject: `New order from ${order.first_name} ${order.last_name}`,
     text: `New order received!\n\nName: ${order.first_name} ${order.last_name}\nEmail: ${order.email}\nPhone: ${order.phone}\nPickup: ${order.pickup_date}\nPayment: ${order.payment_method}\nNotes: ${order.notes}\n\n${itemLines}\n\nTotal: $${order.total.toFixed(2)}`,
   });
+  if (ownerEmail.error) {
+    console.error("Resend error (owner email):", ownerEmail.error);
+  }
 }

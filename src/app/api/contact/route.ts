@@ -15,13 +15,21 @@ export async function POST(req: NextRequest) {
     }
 
     const resend = getResend();
-    await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: OWNER_EMAIL,
       replyTo: email,
       subject: `New message from ${name} — Breaking Bread`,
       text: `From: ${name} <${email}>\n\n${message}`,
     });
+
+    if (error) {
+      console.error("Resend error (contact):", error);
+      return NextResponse.json(
+        { error: `${error.name}: ${error.message}` },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({ success: true });
   } catch (err) {
