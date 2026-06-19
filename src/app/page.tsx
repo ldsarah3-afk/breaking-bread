@@ -551,13 +551,15 @@ export default function HomePage() {
 
               <div>
                 <label className="block text-sm font-semibold text-[#3a1c0e] mb-1">
-                  Notes (optional)
+                  Notes or special requests{" "}
+                  <span className="font-normal text-[#8a5733]">(optional)</span>
                 </label>
                 <textarea
-                  rows={3}
+                  rows={4}
                   value={form.notes}
                   onChange={(e) => setForm({ ...form, notes: e.target.value })}
-                  className="w-full border border-[#ddc9b0] rounded-xl px-4 py-2.5 bg-[#fbf1e5] focus:outline-none focus:ring-2 focus:ring-[#d98a3d] resize-none"
+                  placeholder="Allergies, preferred pickup time, sliced vs. whole, a note for Sarah — anything we should know."
+                  className="w-full border border-[#ddc9b0] rounded-xl px-4 py-2.5 bg-[#fbf1e5] focus:outline-none focus:ring-2 focus:ring-[#d98a3d] resize-none placeholder:text-[#b08a5f]"
                 />
               </div>
 

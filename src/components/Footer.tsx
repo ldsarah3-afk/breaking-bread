@@ -13,7 +13,7 @@ export default function Footer() {
             Instagram
           </a>
           <a
-            href="mailto:orders@breakingbread.com"
+            href="mailto:ldsarah3@gmail.com?subject=Breaking%20Bread%20Inquiry"
             className="hover:text-[#d98a3d] transition-colors"
           >
             Contact

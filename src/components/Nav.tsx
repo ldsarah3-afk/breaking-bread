@@ -15,7 +15,7 @@ export default function Nav() {
           <Link href="/about" className="hover:text-[#d98a3d] transition-colors">
             Our Story
           </Link>
-          <a href="mailto:orders@breakingbread.com" className="hover:text-[#d98a3d] transition-colors">
+          <a href="mailto:ldsarah3@gmail.com?subject=Breaking%20Bread%20Inquiry" className="hover:text-[#d98a3d] transition-colors">
             Contact
           </a>
         </div>
