@@ -31,14 +31,15 @@ export default function AboutPage() {
         </h2>
         <p className="text-[#3a1c0e] text-lg leading-relaxed mb-6">
           I&apos;ll be honest — I fell down the sourdough rabbit hole because of
-          TikTok. All those loaves, the gorgeous ones and the gloriously ugly
-          ones, and I was hooked. (I still turn the flops into memes, no shame.)
+          TikTok. I couldn&apos;t stop watching those loaves, the gorgeous ones
+          and the gloriously imperfect ones, and before long I was hooked.
         </p>
         <p className="text-[#3a1c0e] text-lg leading-relaxed mb-6">
-          But it became more than a hobby. I needed something that was{" "}
-          <em>mine</em> — a way to rebuild my strength, work through the hard
-          days, and put my whole self into something with my hands. Kneading
-          dough turned into my therapy and my workout all at once.
+          But it became more than a hobby. Living with a disability, I needed
+          something that was <em>mine</em> — a way to rebuild my strength, work
+          through the hard days, and pour my whole self into something I could
+          make with my hands. Kneading dough became my therapy and my workout
+          all at once.
         </p>
         <p className="text-[#3a1c0e] text-lg leading-relaxed mb-6">
           It got real last Easter, when I baked loaves for the people I work
