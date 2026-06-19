@@ -198,8 +198,9 @@ export default function HomePage() {
       <AnimatedHero />
 
       {/* Trust strip */}
-      <div className="bg-[#3a1c0e] text-[#fdf2e4]">
-        <div className="max-w-5xl mx-auto px-6 py-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-2 text-sm font-medium tracking-wide">
+      <div className="bg-[#3a1c0e] text-[#fdf2e4] overflow-hidden">
+        {/* Desktop: static centered row */}
+        <div className="hidden sm:flex max-w-5xl mx-auto px-6 py-5 flex-wrap items-center justify-center gap-x-10 gap-y-2 text-sm font-medium tracking-wide">
           <span>48-hour fermentation</span>
           <span className="text-[#d98a3d]">•</span>
           <span>Made from scratch</span>
@@ -207,6 +208,24 @@ export default function HomePage() {
           <span>No commercial yeast</span>
           <span className="text-[#d98a3d]">•</span>
           <span>Baked fresh to order</span>
+        </div>
+
+        {/* Mobile: continuous scrolling marquee */}
+        <div className="sm:hidden py-4">
+          <div className="flex w-max animate-marquee whitespace-nowrap text-sm font-medium tracking-wide">
+            {[0, 1].map((copy) => (
+              <div key={copy} className="flex items-center" aria-hidden={copy === 1}>
+                <span className="px-5">48-hour fermentation</span>
+                <span className="text-[#d98a3d]">•</span>
+                <span className="px-5">Made from scratch</span>
+                <span className="text-[#d98a3d]">•</span>
+                <span className="px-5">No commercial yeast</span>
+                <span className="text-[#d98a3d]">•</span>
+                <span className="px-5">Baked fresh to order</span>
+                <span className="text-[#d98a3d]">•</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
