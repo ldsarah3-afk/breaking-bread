@@ -53,7 +53,7 @@ export default function AboutPage() {
           imperfect ones? Those are my favorites. They&apos;re proof a real
           person made this, by hand, for you.
         </p>
-        <p className="text-[#3a1c0e] text-xl italic font-medium border-l-4 border-[#c0562b] pl-4">
+        <p className="text-[#3a1c0e] text-xl italic font-medium border-l-4 border-[#a3471f] pl-4">
           I put my fight into every loaf — and a whole lot of love. You&apos;ll
           taste the difference.
         </p>

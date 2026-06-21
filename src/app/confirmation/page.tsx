@@ -12,7 +12,7 @@ export default function ConfirmationPage() {
         </p>
         <Link
           href="/"
-          className="inline-block bg-[#c0562b] text-[#fdf2e4] px-8 py-3.5 rounded-xl font-semibold hover:bg-[#a3471f] transition-colors"
+          className="inline-block bg-[#a3471f] text-[#fdf2e4] px-8 py-3.5 rounded-xl font-semibold hover:bg-[#863a18] transition-colors"
         >
           Place another order
         </Link>

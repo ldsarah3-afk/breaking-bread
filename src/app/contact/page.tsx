@@ -31,7 +31,7 @@ export default function ContactPage() {
 
   return (
     <section className="max-w-xl mx-auto px-6 py-20">
-      <p className="text-[#c0562b] uppercase tracking-[0.2em] text-sm font-semibold mb-2 text-center">
+      <p className="text-[#a3471f] uppercase tracking-[0.2em] text-sm font-semibold mb-2 text-center">
         Get in touch
       </p>
       <h1 className="text-4xl sm:text-5xl font-extrabold text-[#3a1c0e] mb-4 text-center">
@@ -55,10 +55,11 @@ export default function ContactPage() {
       ) : (
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-semibold text-[#3a1c0e] mb-1">
+            <label htmlFor="contact-name" className="block text-sm font-semibold text-[#3a1c0e] mb-1">
               Name
             </label>
             <input
+              id="contact-name"
               required
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -66,10 +67,11 @@ export default function ContactPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-[#3a1c0e] mb-1">
+            <label htmlFor="contact-email" className="block text-sm font-semibold text-[#3a1c0e] mb-1">
               Email
             </label>
             <input
+              id="contact-email"
               required
               type="email"
               value={form.email}
@@ -78,10 +80,11 @@ export default function ContactPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-[#3a1c0e] mb-1">
+            <label htmlFor="contact-message" className="block text-sm font-semibold text-[#3a1c0e] mb-1">
               Message
             </label>
             <textarea
+              id="contact-message"
               required
               rows={5}
               value={form.message}
@@ -91,13 +94,13 @@ export default function ContactPage() {
           </div>
 
           {status === "error" && (
-            <p className="text-red-600 text-sm">{error}</p>
+            <p role="alert" className="text-red-700 text-sm">{error}</p>
           )}
 
           <button
             type="submit"
             disabled={status === "loading"}
-            className="w-full bg-[#c0562b] text-[#fdf2e4] py-3.5 rounded-full font-semibold text-lg hover:bg-[#a3471f] transition-colors disabled:opacity-60"
+            className="w-full bg-[#a3471f] text-[#fdf2e4] py-3.5 rounded-full font-semibold text-lg hover:bg-[#863a18] transition-colors disabled:opacity-60"
           >
             {status === "loading" ? "Sending…" : "Send Message"}
           </button>

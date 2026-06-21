@@ -261,7 +261,7 @@ export default function HomePage() {
       {/* Build Your Box — products */}
       <section id="order" className="max-w-6xl mx-auto px-6 pb-8 scroll-mt-20">
         <div className="text-center mb-12">
-          <p className="text-[#c0562b] uppercase tracking-[0.2em] text-sm font-semibold mb-2">
+          <p className="text-[#a3471f] uppercase tracking-[0.2em] text-sm font-semibold mb-2">
             Build Your Order
           </p>
           <h2 className="text-4xl sm:text-5xl font-extrabold text-[#3a1c0e]">
@@ -300,25 +300,35 @@ export default function HomePage() {
                   {cart[product.name] ? (
                     <div className="flex items-center gap-3">
                       <button
+                        type="button"
+                        aria-label={`Remove one ${product.name}`}
                         onClick={() => updateQty(product.name, -1)}
-                        className="w-9 h-9 rounded-full border border-[#d98a3d] text-[#3a1c0e] font-bold hover:bg-[#d98a3d] hover:text-white transition-colors"
+                        className="w-9 h-9 rounded-full border border-[#d98a3d] text-[#3a1c0e] font-bold hover:bg-[#d98a3d] hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3a1c0e] focus-visible:ring-offset-2"
                       >
-                        −
+                        <span aria-hidden="true">−</span>
                       </button>
-                      <span className="w-4 text-center font-semibold">
+                      <span
+                        className="w-4 text-center font-semibold"
+                        aria-live="polite"
+                        aria-label={`${cart[product.name]} ${product.name} in cart`}
+                      >
                         {cart[product.name]}
                       </span>
                       <button
+                        type="button"
+                        aria-label={`Add one ${product.name}`}
                         onClick={() => updateQty(product.name, 1)}
-                        className="w-9 h-9 rounded-full bg-[#c0562b] text-white font-bold hover:bg-[#a3471f] transition-colors"
+                        className="w-9 h-9 rounded-full bg-[#a3471f] text-white font-bold hover:bg-[#863a18] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3a1c0e] focus-visible:ring-offset-2"
                       >
-                        +
+                        <span aria-hidden="true">+</span>
                       </button>
                     </div>
                   ) : (
                     <button
+                      type="button"
+                      aria-label={`Add ${product.name} to your order`}
                       onClick={() => updateQty(product.name, 1)}
-                      className="bg-[#3a1c0e] text-[#fdf2e4] px-4 py-2 rounded-full text-sm font-semibold hover:bg-[#5c3115] transition-colors"
+                      className="bg-[#3a1c0e] text-[#fdf2e4] px-4 py-2 rounded-full text-sm font-semibold hover:bg-[#5c3115] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3a1c0e] focus-visible:ring-offset-2"
                     >
                       Add +
                     </button>
@@ -347,7 +357,7 @@ export default function HomePage() {
                 key={item.t}
                 className="bg-[#4a2614] border border-[#5c3115] rounded-3xl p-7"
               >
-                <div className="w-11 h-11 rounded-full bg-[#c0562b] text-white flex items-center justify-center font-extrabold text-lg mb-4">
+                <div className="w-11 h-11 rounded-full bg-[#a3471f] text-white flex items-center justify-center font-extrabold text-lg mb-4">
                   {i + 1}
                 </div>
                 <h3 className="font-bold text-[#f0c088] text-lg mb-2">{item.t}</h3>
@@ -359,7 +369,7 @@ export default function HomePage() {
           </div>
 
           {/* Store-bought truth callout */}
-          <div className="mt-12 bg-[#c0562b]/15 border border-[#c0562b] rounded-3xl p-8 text-center max-w-3xl mx-auto">
+          <div className="mt-12 bg-[#a3471f]/15 border border-[#a3471f] rounded-3xl p-8 text-center max-w-3xl mx-auto">
             <p className="text-[#d98a3d] uppercase tracking-[0.2em] text-xs mb-3">
               The truth about store-bought
             </p>
@@ -379,7 +389,7 @@ export default function HomePage() {
       {/* How it works */}
       <section className="max-w-6xl mx-auto px-6 py-24">
         <div className="text-center mb-14">
-          <p className="text-[#c0562b] uppercase tracking-[0.2em] text-sm font-semibold mb-2">
+          <p className="text-[#a3471f] uppercase tracking-[0.2em] text-sm font-semibold mb-2">
             How It Works
           </p>
           <h2 className="text-4xl sm:text-5xl font-extrabold text-[#3a1c0e]">
@@ -389,7 +399,7 @@ export default function HomePage() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {STEPS.map((step, i) => (
             <div key={step.t} className="text-center">
-              <div className="w-14 h-14 mx-auto rounded-full bg-[#c0562b] text-white flex items-center justify-center font-extrabold text-xl mb-5">
+              <div className="w-14 h-14 mx-auto rounded-full bg-[#a3471f] text-white flex items-center justify-center font-extrabold text-xl mb-5">
                 {i + 1}
               </div>
               <h3 className="font-bold text-[#3a1c0e] text-lg mb-2">{step.t}</h3>
@@ -412,7 +422,7 @@ export default function HomePage() {
             />
           </div>
           <div>
-            <p className="text-[#c0562b] uppercase tracking-[0.2em] text-sm font-semibold mb-2">
+            <p className="text-[#a3471f] uppercase tracking-[0.2em] text-sm font-semibold mb-2">
               Our Story
             </p>
             <h2 className="text-4xl sm:text-5xl font-extrabold text-[#3a1c0e] mb-5">
@@ -443,7 +453,7 @@ export default function HomePage() {
               different. The imperfect ones? Those are my favorites. They&apos;re
               proof a real person made this, by hand, for you.
             </p>
-            <p className="text-[#3a1c0e] text-xl italic font-medium border-l-4 border-[#c0562b] pl-4 mb-7">
+            <p className="text-[#3a1c0e] text-xl italic font-medium border-l-4 border-[#a3471f] pl-4 mb-7">
               I put my fight into every loaf — and a whole lot of love. You&apos;ll
               taste the difference.
             </p>
@@ -467,10 +477,11 @@ export default function HomePage() {
             <form onSubmit={handleSubmit} className="lg:col-span-2 space-y-5">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-semibold text-[#3a1c0e] mb-1">
+                  <label htmlFor="first_name" className="block text-sm font-semibold text-[#3a1c0e] mb-1">
                     First name
                   </label>
                   <input
+                    id="first_name"
                     required
                     value={form.first_name}
                     onChange={(e) => setForm({ ...form, first_name: e.target.value })}
@@ -478,10 +489,11 @@ export default function HomePage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-[#3a1c0e] mb-1">
+                  <label htmlFor="last_name" className="block text-sm font-semibold text-[#3a1c0e] mb-1">
                     Last name
                   </label>
                   <input
+                    id="last_name"
                     required
                     value={form.last_name}
                     onChange={(e) => setForm({ ...form, last_name: e.target.value })}
@@ -491,10 +503,11 @@ export default function HomePage() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-[#3a1c0e] mb-1">
+                <label htmlFor="email" className="block text-sm font-semibold text-[#3a1c0e] mb-1">
                   Email
                 </label>
                 <input
+                  id="email"
                   required
                   type="email"
                   value={form.email}
@@ -504,10 +517,11 @@ export default function HomePage() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-[#3a1c0e] mb-1">
+                <label htmlFor="phone" className="block text-sm font-semibold text-[#3a1c0e] mb-1">
                   Phone
                 </label>
                 <input
+                  id="phone"
                   required
                   type="tel"
                   value={form.phone}
@@ -517,10 +531,11 @@ export default function HomePage() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-[#3a1c0e] mb-1">
+                <label htmlFor="pickup_date" className="block text-sm font-semibold text-[#3a1c0e] mb-1">
                   Pickup date
                 </label>
                 <input
+                  id="pickup_date"
                   required
                   type="date"
                   value={form.pickup_date}
@@ -529,17 +544,21 @@ export default function HomePage() {
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-semibold text-[#3a1c0e] mb-2">
+              <div role="group" aria-labelledby="payment-method-label">
+                <span
+                  id="payment-method-label"
+                  className="block text-sm font-semibold text-[#3a1c0e] mb-2"
+                >
                   Payment method
-                </label>
+                </span>
                 <div className="flex flex-wrap gap-2">
                   {PAYMENT_METHODS.map((method) => (
                     <button
                       key={method}
                       type="button"
+                      aria-pressed={form.payment_method === method}
                       onClick={() => setForm({ ...form, payment_method: method })}
-                      className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
+                      className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3a1c0e] focus-visible:ring-offset-2 ${
                         form.payment_method === method
                           ? "bg-[#3a1c0e] text-white border-[#3a1c0e]"
                           : "bg-white text-[#3a1c0e] border-[#ddc9b0] hover:border-[#d98a3d]"
@@ -552,25 +571,26 @@ export default function HomePage() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-[#3a1c0e] mb-1">
+                <label htmlFor="notes" className="block text-sm font-semibold text-[#3a1c0e] mb-1">
                   Notes or special requests{" "}
                   <span className="font-normal text-[#8a5733]">(optional)</span>
                 </label>
                 <textarea
+                  id="notes"
                   rows={4}
                   value={form.notes}
                   onChange={(e) => setForm({ ...form, notes: e.target.value })}
                   placeholder="Allergies, preferred pickup time, sliced vs. whole, a note for Sarah — anything we should know."
-                  className="w-full border border-[#ddc9b0] rounded-xl px-4 py-2.5 bg-[#fbf1e5] focus:outline-none focus:ring-2 focus:ring-[#d98a3d] resize-none placeholder:text-[#b08a5f]"
+                  className="w-full border border-[#ddc9b0] rounded-xl px-4 py-2.5 bg-[#fbf1e5] focus:outline-none focus:ring-2 focus:ring-[#d98a3d] resize-none placeholder:text-[#8a5733]"
                 />
               </div>
 
-              {error && <p className="text-red-600 text-sm">{error}</p>}
+              {error && <p role="alert" className="text-red-700 text-sm">{error}</p>}
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#c0562b] text-[#fdf2e4] py-4 rounded-full font-semibold text-lg hover:bg-[#a3471f] transition-colors disabled:opacity-60 shadow"
+                className="w-full bg-[#a3471f] text-[#fdf2e4] py-4 rounded-full font-semibold text-lg hover:bg-[#863a18] transition-colors disabled:opacity-60 shadow"
               >
                 {loading ? "Placing order…" : "Place Pre-Order →"}
               </button>
@@ -582,7 +602,7 @@ export default function HomePage() {
                 Order Summary
               </h3>
               {cartItems.length === 0 ? (
-                <p className="text-[#b08a5f] text-sm">No items selected yet.</p>
+                <p className="text-[#8a5733] text-sm">No items selected yet.</p>
               ) : (
                 <ul className="space-y-3 mb-4">
                   {cartItems.map((item) => (

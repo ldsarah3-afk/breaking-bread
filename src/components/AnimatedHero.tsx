@@ -75,7 +75,7 @@ export function AnimatedHero() {
             </a>
             <a
               href="#order"
-              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full font-semibold bg-[#c0562b] text-[#fdf2e4] hover:bg-[#a3471f] transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full font-semibold bg-[#a3471f] text-[#fdf2e4] hover:bg-[#863a18] transition-colors"
             >
               Build Your Order <MoveRight className="w-4 h-4" />
             </a>
