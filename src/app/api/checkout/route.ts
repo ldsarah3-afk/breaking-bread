@@ -36,6 +36,8 @@ export async function POST(req: NextRequest) {
         last_name: body.last_name,
         phone: body.phone,
         pickup_date: body.pickup_date,
+        pickup_time: body.pickup_time,
+        location: body.location,
         payment_method: body.payment_method,
         notes: body.notes,
         items: JSON.stringify(body.items),

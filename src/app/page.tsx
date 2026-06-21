@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import type { Product, CartItem, OrderPayload } from "@/types";
@@ -67,6 +67,29 @@ const PRODUCTS: Product[] = [
 
 const PAYMENT_METHODS = ["Card", "Apple Pay", "Venmo", "Cash", "Check"];
 
+const LOCATIONS = [
+  {
+    name: "Martin's — South Bend (near Notre Dame)",
+    address: "2081 South Bend Ave, South Bend, IN 46637",
+    maps: "https://maps.google.com/?q=2081+South+Bend+Ave,+South+Bend,+IN+46637",
+  },
+  {
+    name: "Martin's — Heritage Square, Granger",
+    address: "7355 Heritage Square Dr, Granger, IN 46530",
+    maps: "https://maps.google.com/?q=7355+Heritage+Square+Dr,+Granger,+IN+46530",
+  },
+  {
+    name: "Rural King — Niles, MI",
+    address: "2707 S 11th St, Niles, MI 49120",
+    maps: "https://maps.google.com/?q=2707+S+11th+St,+Niles,+MI+49120",
+  },
+];
+
+const PICKUP_WINDOWS = ["Morning (8–11am)", "Afternoon (1–4pm)"];
+
+// Minimum lead time so there's always time for the 48-hour ferment.
+const LEAD_DAYS = 2;
+
 const REASONS = [
   {
     t: "Easier to digest",
@@ -128,11 +151,29 @@ export default function HomePage() {
     email: "",
     phone: "",
     pickup_date: "",
+    pickup_time: PICKUP_WINDOWS[0],
+    location: LOCATIONS[0].name,
     payment_method: "Card",
     notes: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [unavailableDates, setUnavailableDates] = useState<string[]>([]);
+
+  // Load the dates Sarah has marked unavailable so we can block them.
+  useEffect(() => {
+    fetch("/api/availability")
+      .then((r) => r.json())
+      .then((d) => setUnavailableDates(d.dates ?? []))
+      .catch(() => setUnavailableDates([]));
+  }, []);
+
+  // Earliest selectable pickup date (today + lead time), as YYYY-MM-DD.
+  const minDate = (() => {
+    const d = new Date();
+    d.setDate(d.getDate() + LEAD_DAYS);
+    return d.toISOString().split("T")[0];
+  })();
 
   const updateQty = (name: string, delta: number) => {
     setCart((prev) => {
@@ -153,6 +194,14 @@ export default function HomePage() {
     setError("");
     if (cartItems.length === 0) {
       setError("Please add at least one item to your order.");
+      return;
+    }
+    if (form.pickup_date < minDate) {
+      setError(`Please choose a pickup date at least ${LEAD_DAYS} days out — our bread needs time to ferment.`);
+      return;
+    }
+    if (unavailableDates.includes(form.pickup_date)) {
+      setError("Sorry, we're not available on that date. Please pick another.");
       return;
     }
 
@@ -530,18 +579,91 @@ export default function HomePage() {
                 />
               </div>
 
-              <div>
-                <label htmlFor="pickup_date" className="block text-sm font-semibold text-[#3a1c0e] mb-1">
-                  Pickup date
-                </label>
-                <input
-                  id="pickup_date"
-                  required
-                  type="date"
-                  value={form.pickup_date}
-                  onChange={(e) => setForm({ ...form, pickup_date: e.target.value })}
-                  className="w-full border border-[#ddc9b0] rounded-xl px-4 py-2.5 bg-[#fbf1e5] focus:outline-none focus:ring-2 focus:ring-[#d98a3d]"
-                />
+              {/* Pickup location */}
+              <div role="group" aria-labelledby="location-label">
+                <span
+                  id="location-label"
+                  className="block text-sm font-semibold text-[#3a1c0e] mb-2"
+                >
+                  Pickup location
+                </span>
+                <div className="space-y-2">
+                  {LOCATIONS.map((loc) => (
+                    <label
+                      key={loc.name}
+                      className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-colors ${
+                        form.location === loc.name
+                          ? "border-[#a3471f] bg-[#a3471f]/5"
+                          : "border-[#ddc9b0] hover:border-[#d98a3d]"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="location"
+                        value={loc.name}
+                        checked={form.location === loc.name}
+                        onChange={(e) => setForm({ ...form, location: e.target.value })}
+                        className="mt-1 accent-[#a3471f]"
+                      />
+                      <span>
+                        <span className="block font-semibold text-[#3a1c0e] text-sm">
+                          {loc.name}
+                        </span>
+                        <span className="block text-[#8a5733] text-sm">
+                          {loc.address}
+                        </span>
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Pickup date + window */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="pickup_date" className="block text-sm font-semibold text-[#3a1c0e] mb-1">
+                    Pickup date
+                  </label>
+                  <input
+                    id="pickup_date"
+                    required
+                    type="date"
+                    min={minDate}
+                    value={form.pickup_date}
+                    onChange={(e) => setForm({ ...form, pickup_date: e.target.value })}
+                    className="w-full border border-[#ddc9b0] rounded-xl px-4 py-2.5 bg-[#fbf1e5] focus:outline-none focus:ring-2 focus:ring-[#d98a3d]"
+                  />
+                  {form.pickup_date && unavailableDates.includes(form.pickup_date) && (
+                    <p role="alert" className="text-red-700 text-sm mt-1">
+                      We&apos;re not available that day — please pick another.
+                    </p>
+                  )}
+                </div>
+                <div role="group" aria-labelledby="window-label">
+                  <span
+                    id="window-label"
+                    className="block text-sm font-semibold text-[#3a1c0e] mb-1"
+                  >
+                    Pickup time
+                  </span>
+                  <div className="flex gap-2">
+                    {PICKUP_WINDOWS.map((win) => (
+                      <button
+                        key={win}
+                        type="button"
+                        aria-pressed={form.pickup_time === win}
+                        onClick={() => setForm({ ...form, pickup_time: win })}
+                        className={`flex-1 px-3 py-2.5 rounded-xl text-sm font-medium border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3a1c0e] focus-visible:ring-offset-2 ${
+                          form.pickup_time === win
+                            ? "bg-[#3a1c0e] text-white border-[#3a1c0e]"
+                            : "bg-white text-[#3a1c0e] border-[#ddc9b0] hover:border-[#d98a3d]"
+                        }`}
+                      >
+                        {win}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
 
               <div role="group" aria-labelledby="payment-method-label">
@@ -620,6 +742,16 @@ export default function HomePage() {
               <div className="border-t border-[#ecdac4] pt-3 flex justify-between font-extrabold text-[#3a1c0e]">
                 <span>Total{totalItems ? ` (${totalItems})` : ""}</span>
                 <span>${total.toFixed(2)}</span>
+              </div>
+
+              <div className="border-t border-[#ecdac4] mt-4 pt-4 text-sm text-[#8a5733] space-y-1">
+                <p>
+                  <span className="font-semibold text-[#3a1c0e]">Pickup:</span>{" "}
+                  {form.location}
+                </p>
+                <p>
+                  {form.pickup_date || "Choose a date"} · {form.pickup_time}
+                </p>
               </div>
             </div>
           </div>

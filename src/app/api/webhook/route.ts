@@ -32,6 +32,8 @@ export async function POST(req: NextRequest) {
       email: session.customer_email ?? m.email ?? "",
       phone: m.phone ?? "",
       pickup_date: m.pickup_date ?? "",
+      pickup_time: m.pickup_time ?? "",
+      location: m.location ?? "",
       payment_method: m.payment_method ?? "Card",
       notes: m.notes ?? "",
       items: m.items ? JSON.parse(m.items) : [],

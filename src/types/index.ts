@@ -15,6 +15,8 @@ export interface OrderPayload {
   email: string;
   phone: string;
   pickup_date: string;
+  pickup_time: string;
+  location: string;
   payment_method: string;
   notes: string;
   items: { name: string; qty: number; price: number }[];

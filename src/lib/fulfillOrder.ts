@@ -11,6 +11,8 @@ export async function fulfillOrder(order: OrderPayload) {
     email: order.email,
     phone: order.phone,
     pickup_date: order.pickup_date,
+    pickup_time: order.pickup_time,
+    location: order.location,
     payment_method: order.payment_method,
     notes: order.notes,
     items: order.items,
@@ -30,7 +32,7 @@ export async function fulfillOrder(order: OrderPayload) {
     from: FROM_EMAIL,
     to: order.email,
     subject: "Your Breaking Bread order is confirmed!",
-    text: `Hi ${order.first_name},\n\nYour order is confirmed!\n\n${itemLines}\n\nTotal: $${order.total.toFixed(2)}\nPickup date: ${order.pickup_date}\n\nSee you soon!\n— Breaking Bread`,
+    text: `Hi ${order.first_name},\n\nYour order is confirmed!\n\n${itemLines}\n\nTotal: $${order.total.toFixed(2)}\n\nPickup: ${order.location}\nDate: ${order.pickup_date} (${order.pickup_time})\n\nSee you soon!\n— Breaking Bread`,
   });
   if (customerEmail.error) {
     console.error("Resend error (customer email):", customerEmail.error);
@@ -40,7 +42,7 @@ export async function fulfillOrder(order: OrderPayload) {
     from: FROM_EMAIL,
     to: OWNER_EMAIL,
     subject: `New order from ${order.first_name} ${order.last_name}`,
-    text: `New order received!\n\nName: ${order.first_name} ${order.last_name}\nEmail: ${order.email}\nPhone: ${order.phone}\nPickup: ${order.pickup_date}\nPayment: ${order.payment_method}\nNotes: ${order.notes}\n\n${itemLines}\n\nTotal: $${order.total.toFixed(2)}`,
+    text: `New order received!\n\nName: ${order.first_name} ${order.last_name}\nEmail: ${order.email}\nPhone: ${order.phone}\n\nPickup location: ${order.location}\nPickup date: ${order.pickup_date} (${order.pickup_time})\n\nPayment: ${order.payment_method}\nNotes: ${order.notes}\n\n${itemLines}\n\nTotal: $${order.total.toFixed(2)}`,
   });
   if (ownerEmail.error) {
     console.error("Resend error (owner email):", ownerEmail.error);
