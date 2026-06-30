@@ -81,6 +81,19 @@ export default function AdminPage() {
     }
   };
 
+  const setStatus = async (orderId: string, status: string) => {
+    setBusy(true);
+    setError("");
+    try {
+      const data = await call({ action: "setStatus", orderId, status });
+      setOrders(data.orders);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Update failed");
+    } finally {
+      setBusy(false);
+    }
+  };
+
   if (!authed) {
     return (
       <section className="max-w-sm mx-auto px-6 py-24">
@@ -156,13 +169,28 @@ export default function AdminPage() {
               orders.map((o) => (
                 <div
                   key={o.id}
-                  className="bg-white border border-[#ecdac4] rounded-2xl p-4 text-sm"
+                  className={`border rounded-2xl p-4 text-sm ${
+                    o.status === "completed"
+                      ? "bg-[#f3efe7] border-[#ecdac4] opacity-70"
+                      : "bg-white border-[#ecdac4]"
+                  }`}
                 >
-                  <div className="flex justify-between font-bold text-[#3a1c0e]">
+                  <div className="flex justify-between items-start font-bold text-[#3a1c0e]">
                     <span>
                       {o.first_name} {o.last_name}
                     </span>
                     <span>${Number(o.total).toFixed(2)}</span>
+                  </div>
+                  <div className="mt-1 mb-1">
+                    <span
+                      className={`inline-block text-xs font-semibold px-2 py-0.5 rounded-full ${
+                        o.status === "completed"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-amber-100 text-amber-800"
+                      }`}
+                    >
+                      {o.status === "completed" ? "Completed" : "Pending"}
+                    </span>
                   </div>
                   <p className="text-[#8a5733]">
                     {o.pickup_date} · {o.pickup_time}
@@ -181,6 +209,27 @@ export default function AdminPage() {
                   {o.notes && (
                     <p className="text-[#3a1c0e] mt-2 italic">“{o.notes}”</p>
                   )}
+                  <div className="mt-3">
+                    {o.status === "completed" ? (
+                      <button
+                        type="button"
+                        disabled={busy}
+                        onClick={() => setStatus(o.id, "pending")}
+                        className="text-sm font-semibold text-[#8a5733] underline disabled:opacity-50"
+                      >
+                        Reopen
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        disabled={busy}
+                        onClick={() => setStatus(o.id, "completed")}
+                        className="bg-[#3a1c0e] text-[#fdf2e4] px-4 py-2 rounded-full text-sm font-semibold hover:bg-[#5c3115] transition-colors disabled:opacity-50"
+                      >
+                        Mark as completed
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))
             )}

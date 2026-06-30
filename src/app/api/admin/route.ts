@@ -11,7 +11,7 @@ function checkPassword(password: unknown): boolean {
 
 export async function POST(req: NextRequest) {
   try {
-    const { password, action, date } = await req.json();
+    const { password, action, date, orderId, status } = await req.json();
 
     if (!checkPassword(password)) {
       return NextResponse.json({ error: "Incorrect password." }, { status: 401 });
@@ -29,6 +29,12 @@ export async function POST(req: NextRequest) {
         .from("unavailable_dates")
         .delete()
         .eq("date", date);
+      if (error) throw new Error(error.message);
+    } else if (action === "setStatus" && orderId && status) {
+      const { error } = await supabase
+        .from("orders")
+        .update({ status })
+        .eq("id", orderId);
       if (error) throw new Error(error.message);
     }
 
