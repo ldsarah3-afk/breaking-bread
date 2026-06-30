@@ -37,6 +37,7 @@ export default function AdminPage() {
   const [blocked, setBlocked] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [tab, setTab] = useState<"active" | "completed">("active");
 
   const call = async (body: Record<string, unknown>) => {
     const res = await fetch("/api/admin", {
@@ -159,14 +160,45 @@ export default function AdminPage() {
 
         {/* Orders */}
         <div>
-          <h2 className="text-xl font-bold text-[#3a1c0e] mb-4">
-            Orders ({orders.length})
-          </h2>
-          <div className="space-y-4 max-h-[36rem] overflow-y-auto pr-1">
-            {orders.length === 0 ? (
-              <p className="text-[#8a5733] text-sm">No orders yet.</p>
-            ) : (
-              orders.map((o) => (
+          {(() => {
+            const activeOrders = orders.filter((o) => o.status !== "completed");
+            const completedOrders = orders.filter((o) => o.status === "completed");
+            const shown = tab === "active" ? activeOrders : completedOrders;
+            return (
+              <>
+                <div className="flex gap-2 mb-4">
+                  <button
+                    type="button"
+                    onClick={() => setTab("active")}
+                    className={`px-4 py-2 rounded-full text-sm font-semibold border transition-colors ${
+                      tab === "active"
+                        ? "bg-[#3a1c0e] text-white border-[#3a1c0e]"
+                        : "bg-white text-[#3a1c0e] border-[#ddc9b0] hover:border-[#d98a3d]"
+                    }`}
+                  >
+                    Active ({activeOrders.length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setTab("completed")}
+                    className={`px-4 py-2 rounded-full text-sm font-semibold border transition-colors ${
+                      tab === "completed"
+                        ? "bg-[#3a1c0e] text-white border-[#3a1c0e]"
+                        : "bg-white text-[#3a1c0e] border-[#ddc9b0] hover:border-[#d98a3d]"
+                    }`}
+                  >
+                    Completed ({completedOrders.length})
+                  </button>
+                </div>
+                <div className="space-y-4 max-h-[36rem] overflow-y-auto pr-1">
+                  {shown.length === 0 ? (
+                    <p className="text-[#8a5733] text-sm">
+                      {tab === "active"
+                        ? "No active orders."
+                        : "No completed orders yet."}
+                    </p>
+                  ) : (
+                    shown.map((o) => (
                 <div
                   key={o.id}
                   className={`border rounded-2xl p-4 text-sm ${
@@ -231,9 +263,12 @@ export default function AdminPage() {
                     )}
                   </div>
                 </div>
-              ))
-            )}
-          </div>
+                    ))
+                  )}
+                </div>
+              </>
+            );
+          })()}
         </div>
       </div>
     </section>
