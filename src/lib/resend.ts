@@ -6,7 +6,6 @@ export function getResend() {
 }
 
 // Set OWNER_EMAIL to the bakery owner's email address
-export const OWNER_EMAIL = process.env.OWNER_EMAIL ?? "owner@breakingbread.com";
-// Resend's shared test domain — works with no domain setup.
-// Swap to "orders@yourdomain.com" once you verify your own domain in Resend.
-export const FROM_EMAIL = "Breaking Bread <onboarding@resend.dev>";
+export const OWNER_EMAIL = process.env.OWNER_EMAIL ?? "ldsarah3@gmail.com";
+// Verified Resend domain — sends to any recipient (customers + owner).
+export const FROM_EMAIL = "Breaking Bread <orders@breaking-bread.net>";
