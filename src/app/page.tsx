@@ -3,8 +3,18 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { DayPicker } from "react-day-picker";
 import type { Product, CartItem, OrderPayload } from "@/types";
 import { AnimatedHero } from "@/components/AnimatedHero";
+
+const toYMD = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
+    d.getDate()
+  ).padStart(2, "0")}`;
+const fromYMD = (s: string) => {
+  const [y, m, d] = s.split("-").map(Number);
+  return new Date(y, m - 1, d);
+};
 
 const PRODUCTS: Product[] = [
   {
@@ -172,7 +182,7 @@ export default function HomePage() {
   const minDate = (() => {
     const d = new Date();
     d.setDate(d.getDate() + LEAD_DAYS);
-    return d.toISOString().split("T")[0];
+    return toYMD(d);
   })();
 
   const updateQty = (name: string, delta: number) => {
@@ -618,51 +628,54 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Pickup date + window */}
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="pickup_date" className="block text-sm font-semibold text-[#3a1c0e] mb-1">
-                    Pickup date
-                  </label>
-                  <input
-                    id="pickup_date"
-                    required
-                    type="date"
-                    min={minDate}
-                    value={form.pickup_date}
-                    onChange={(e) => setForm({ ...form, pickup_date: e.target.value })}
-                    className="w-full border border-[#ddc9b0] rounded-xl px-4 py-2.5 bg-[#fbf1e5] focus:outline-none focus:ring-2 focus:ring-[#d98a3d]"
+              {/* Pickup date (calendar) */}
+              <div>
+                <span className="block text-sm font-semibold text-[#3a1c0e] mb-1">
+                  Pickup date
+                </span>
+                <div className="bg-white border border-[#ddc9b0] rounded-xl p-3 inline-block">
+                  <DayPicker
+                    mode="single"
+                    selected={form.pickup_date ? fromYMD(form.pickup_date) : undefined}
+                    onSelect={(d) =>
+                      setForm({ ...form, pickup_date: d ? toYMD(d) : "" })
+                    }
+                    disabled={[
+                      { before: fromYMD(minDate) },
+                      ...unavailableDates.map(fromYMD),
+                    ]}
                   />
-                  {form.pickup_date && unavailableDates.includes(form.pickup_date) && (
-                    <p role="alert" className="text-red-700 text-sm mt-1">
-                      We&apos;re not available that day — please pick another.
-                    </p>
-                  )}
                 </div>
-                <div role="group" aria-labelledby="window-label">
-                  <span
-                    id="window-label"
-                    className="block text-sm font-semibold text-[#3a1c0e] mb-1"
-                  >
-                    Pickup time
-                  </span>
-                  <div className="flex gap-2">
-                    {PICKUP_WINDOWS.map((win) => (
-                      <button
-                        key={win}
-                        type="button"
-                        aria-pressed={form.pickup_time === win}
-                        onClick={() => setForm({ ...form, pickup_time: win })}
-                        className={`flex-1 px-3 py-2.5 rounded-xl text-sm font-medium border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3a1c0e] focus-visible:ring-offset-2 ${
-                          form.pickup_time === win
-                            ? "bg-[#3a1c0e] text-white border-[#3a1c0e]"
-                            : "bg-white text-[#3a1c0e] border-[#ddc9b0] hover:border-[#d98a3d]"
-                        }`}
-                      >
-                        {win}
-                      </button>
-                    ))}
-                  </div>
+                <p className="text-[#8a5733] text-xs mt-1">
+                  Earliest pickup is {LEAD_DAYS} days out. Grayed-out days are
+                  unavailable.
+                </p>
+              </div>
+
+              {/* Pickup window */}
+              <div role="group" aria-labelledby="window-label">
+                <span
+                  id="window-label"
+                  className="block text-sm font-semibold text-[#3a1c0e] mb-2"
+                >
+                  Pickup time
+                </span>
+                <div className="flex gap-2 max-w-sm">
+                  {PICKUP_WINDOWS.map((win) => (
+                    <button
+                      key={win}
+                      type="button"
+                      aria-pressed={form.pickup_time === win}
+                      onClick={() => setForm({ ...form, pickup_time: win })}
+                      className={`flex-1 px-3 py-2.5 rounded-xl text-sm font-medium border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3a1c0e] focus-visible:ring-offset-2 ${
+                        form.pickup_time === win
+                          ? "bg-[#3a1c0e] text-white border-[#3a1c0e]"
+                          : "bg-white text-[#3a1c0e] border-[#ddc9b0] hover:border-[#d98a3d]"
+                      }`}
+                    >
+                      {win}
+                    </button>
+                  ))}
                 </div>
               </div>
 

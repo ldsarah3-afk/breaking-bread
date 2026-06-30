@@ -43,6 +43,22 @@ select:focus-visible {
   top: 1rem;
 }
 
+/* react-day-picker theming to match the bakery palette */
+.rdp-root {
+  --rdp-accent-color: #a3471f;
+  --rdp-accent-background-color: #fbe9dd;
+  --rdp-today-color: #a3471f;
+  margin: 0;
+}
+.rdp-day_button:hover:not([disabled]) {
+  background-color: #f4e3d2;
+}
+/* Blocked days in the admin calendar */
+.rdp-blocked .rdp-day_button {
+  background-color: #a3471f !important;
+  color: #fdf2e4 !important;
+}
+
 @keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
