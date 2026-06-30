@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
+import { getResend, FROM_EMAIL } from "@/lib/resend";
 
 export const dynamic = "force-dynamic";
 
@@ -31,11 +32,28 @@ export async function POST(req: NextRequest) {
         .eq("date", date);
       if (error) throw new Error(error.message);
     } else if (action === "setStatus" && orderId && status) {
-      const { error } = await supabase
+      const { data: updated, error } = await supabase
         .from("orders")
         .update({ status })
-        .eq("id", orderId);
+        .eq("id", orderId)
+        .select()
+        .single();
       if (error) throw new Error(error.message);
+
+      // When an order is marked completed, send the customer a "ready" follow-up email.
+      if (status === "completed" && updated?.email) {
+        try {
+          const { error: emailErr } = await getResend().emails.send({
+            from: FROM_EMAIL,
+            to: updated.email,
+            subject: "Your Breaking Bread order is baked & ready 🍞",
+            text: `Hi ${updated.first_name},\n\nYour bread is baked and set aside for your scheduled pickup!\n\nPlease meet us at your chosen time:\n\nLocation: ${updated.location}\nDate: ${updated.pickup_date}\nTime window: ${updated.pickup_time}\n\nPlease come during your scheduled window so we can be there to hand it off. See you then!\n— Sarah`,
+          });
+          if (emailErr) console.error("Follow-up email error:", emailErr);
+        } catch (e) {
+          console.error("Follow-up email failed:", e);
+        }
+      }
     }
 
     // Always return current state (orders + blocked dates)
