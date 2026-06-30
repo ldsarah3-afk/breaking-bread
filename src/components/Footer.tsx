@@ -20,6 +20,18 @@ export default function Footer() {
           >
             Contact
           </Link>
+          <Link
+            href="/terms"
+            className="hover:text-[#d98a3d] transition-colors"
+          >
+            Terms
+          </Link>
+          <Link
+            href="/privacy"
+            className="hover:text-[#d98a3d] transition-colors"
+          >
+            Privacy
+          </Link>
         </div>
       </div>
     </footer>

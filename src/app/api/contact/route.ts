@@ -5,7 +5,12 @@ export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, message } = await req.json();
+    const { name, email, message, company } = await req.json();
+
+    // Honeypot: if this hidden field is filled, it's a bot. Pretend success, drop it.
+    if (company) {
+      return NextResponse.json({ success: true });
+    }
 
     if (!name || !email || !message) {
       return NextResponse.json(

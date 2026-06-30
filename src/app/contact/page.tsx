@@ -4,6 +4,7 @@ import { useState } from "react";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [hp, setHp] = useState(""); // honeypot — humans never fill this
   const [status, setStatus] = useState<"idle" | "loading" | "sent" | "error">(
     "idle"
   );
@@ -17,7 +18,7 @@ export default function ContactPage() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, company: hp }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error ?? "Something went wrong.");
@@ -54,6 +55,17 @@ export default function ContactPage() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Honeypot: hidden from people, bots tend to fill it */}
+          <input
+            type="text"
+            name="company"
+            tabIndex={-1}
+            autoComplete="off"
+            value={hp}
+            onChange={(e) => setHp(e.target.value)}
+            aria-hidden="true"
+            style={{ position: "absolute", left: "-9999px", width: 1, height: 1 }}
+          />
           <div>
             <label htmlFor="contact-name" className="block text-sm font-semibold text-[#3a1c0e] mb-1">
               Name
