@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
-import { getResend, FROM_EMAIL } from "@/lib/resend";
+import { getResend, FROM_EMAIL, OWNER_EMAIL } from "@/lib/resend";
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +12,7 @@ function checkPassword(password: unknown): boolean {
 
 export async function POST(req: NextRequest) {
   try {
-    const { password, action, date, orderId, status } = await req.json();
+    const { password, action, date, orderId, status, time } = await req.json();
 
     if (!checkPassword(password)) {
       return NextResponse.json({ error: "Incorrect password." }, { status: 401 });
@@ -53,6 +53,24 @@ export async function POST(req: NextRequest) {
         } catch (e) {
           console.error("Follow-up email failed:", e);
         }
+      }
+    } else if (action === "proposeTime" && orderId && time) {
+      const { data: order, error } = await supabase
+        .from("orders")
+        .select("first_name, email, pickup_date, pickup_time, location")
+        .eq("id", orderId)
+        .single();
+      if (error) throw new Error(error.message);
+
+      if (order?.email) {
+        const { error: emailErr } = await getResend().emails.send({
+          from: FROM_EMAIL,
+          to: order.email,
+          replyTo: OWNER_EMAIL,
+          subject: "A pickup time for your Breaking Bread order",
+          text: `Hi ${order.first_name},\n\nThanks again for your order! For your pickup on ${order.pickup_date} at ${order.location} (${order.pickup_time} window), could you do ${time}?\n\nJust reply to this email to confirm — or let me know a time that works better and we'll sort it out.\n\n— Sarah, Breaking Bread`,
+        });
+        if (emailErr) throw new Error(emailErr.message);
       }
     }
 

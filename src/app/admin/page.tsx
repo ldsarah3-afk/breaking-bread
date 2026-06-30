@@ -38,6 +38,8 @@ export default function AdminPage() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [tab, setTab] = useState<"active" | "completed">("active");
+  const [timeInputs, setTimeInputs] = useState<Record<string, string>>({});
+  const [sentTime, setSentTime] = useState<Record<string, boolean>>({});
 
   const call = async (body: Record<string, unknown>) => {
     const res = await fetch("/api/admin", {
@@ -90,6 +92,21 @@ export default function AdminPage() {
       setOrders(data.orders);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Update failed");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const proposeTime = async (orderId: string) => {
+    const time = (timeInputs[orderId] ?? "").trim();
+    if (!time) return;
+    setBusy(true);
+    setError("");
+    try {
+      await call({ action: "proposeTime", orderId, time });
+      setSentTime((p) => ({ ...p, [orderId]: true }));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not send");
     } finally {
       setBusy(false);
     }
@@ -241,6 +258,38 @@ export default function AdminPage() {
                   {o.notes && (
                     <p className="text-[#3a1c0e] mt-2 italic">“{o.notes}”</p>
                   )}
+                  {o.status !== "completed" && (
+                    <div className="mt-3 border-t border-[#ecdac4] pt-3">
+                      <label className="block text-xs font-semibold text-[#3a1c0e] mb-1">
+                        Propose a specific pickup time
+                      </label>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          placeholder="e.g. 9:30am"
+                          value={timeInputs[o.id] ?? ""}
+                          onChange={(e) =>
+                            setTimeInputs((p) => ({ ...p, [o.id]: e.target.value }))
+                          }
+                          className="flex-1 border border-[#ddc9b0] rounded-lg px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#d98a3d]"
+                        />
+                        <button
+                          type="button"
+                          disabled={busy || !(timeInputs[o.id] ?? "").trim()}
+                          onClick={() => proposeTime(o.id)}
+                          className="bg-[#a3471f] text-[#fdf2e4] px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-[#863a18] transition-colors disabled:opacity-50"
+                        >
+                          Email
+                        </button>
+                      </div>
+                      {sentTime[o.id] && (
+                        <p className="text-green-700 text-xs mt-1">
+                          Sent — they&apos;ll reply to your inbox.
+                        </p>
+                      )}
+                    </div>
+                  )}
+
                   <div className="mt-3">
                     {o.status === "completed" ? (
                       <button
