@@ -19,25 +19,41 @@ export async function POST(req: NextRequest) {
     // Set STRIPE_SECRET_KEY to your Stripe secret key
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      line_items: body.items.map((item) => ({
+    const lineItems = body.items.map((item) => ({
+      price_data: {
+        currency: "usd",
+        product_data: { name: item.name },
+        unit_amount: Math.round(item.price * 100),
+      },
+      quantity: item.qty,
+    }));
+
+    if (body.delivery_fee > 0) {
+      lineItems.push({
         price_data: {
           currency: "usd",
-          product_data: { name: item.name },
-          unit_amount: Math.round(item.price * 100),
+          product_data: { name: "Delivery" },
+          unit_amount: Math.round(body.delivery_fee * 100),
         },
-        quantity: item.qty,
-      })),
+        quantity: 1,
+      });
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: lineItems,
       mode: "payment",
       customer_email: body.email,
       metadata: {
         first_name: body.first_name,
         last_name: body.last_name,
         phone: body.phone,
+        fulfillment: body.fulfillment,
         pickup_date: body.pickup_date,
         pickup_time: body.pickup_time,
         location: body.location,
+        delivery_address: body.delivery_address,
+        delivery_fee: String(body.delivery_fee),
         payment_method: body.payment_method,
         notes: body.notes,
         items: JSON.stringify(body.items),

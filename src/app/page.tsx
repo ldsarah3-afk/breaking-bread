@@ -100,6 +100,10 @@ const PICKUP_WINDOWS = ["Morning (8–11am)", "Afternoon (1–4pm)"];
 // Minimum lead time so there's always time for the 48-hour ferment.
 const LEAD_DAYS = 2;
 
+// Delivery: $10 flat, free for orders of $50 or more.
+const DELIVERY_FEE = 10;
+const FREE_DELIVERY_THRESHOLD = 50;
+
 const REASONS = [
   {
     t: "Easier to digest",
@@ -160,9 +164,11 @@ export default function HomePage() {
     last_name: "",
     email: "",
     phone: "",
+    fulfillment: "pickup",
     pickup_date: "",
     pickup_time: PICKUP_WINDOWS[0],
     location: LOCATIONS[0].name,
+    delivery_address: "",
     payment_method: "Card",
     notes: "",
   });
@@ -197,7 +203,12 @@ export default function HomePage() {
     (p) => ({ ...p, qty: cart[p.name] })
   );
   const totalItems = cartItems.reduce((sum, i) => sum + i.qty, 0);
-  const total = cartItems.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const subtotal = cartItems.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const deliveryFee =
+    form.fulfillment === "delivery" && subtotal < FREE_DELIVERY_THRESHOLD
+      ? DELIVERY_FEE
+      : 0;
+  const total = subtotal + deliveryFee;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -214,9 +225,17 @@ export default function HomePage() {
       setError("Sorry, we're not available on that date. Please pick another.");
       return;
     }
+    if (form.fulfillment === "delivery" && !form.delivery_address.trim()) {
+      setError("Please enter your delivery address.");
+      return;
+    }
 
     const payload: OrderPayload = {
       ...form,
+      location: form.fulfillment === "pickup" ? form.location : "",
+      delivery_address:
+        form.fulfillment === "delivery" ? form.delivery_address : "",
+      delivery_fee: deliveryFee,
       items: cartItems.map((i) => ({ name: i.name, qty: i.qty, price: i.price })),
       total,
     };
@@ -589,49 +608,108 @@ export default function HomePage() {
                 />
               </div>
 
-              {/* Pickup location */}
-              <div role="group" aria-labelledby="location-label">
+              {/* Fulfillment: pickup or delivery */}
+              <div role="group" aria-labelledby="fulfillment-label">
                 <span
-                  id="location-label"
+                  id="fulfillment-label"
                   className="block text-sm font-semibold text-[#3a1c0e] mb-2"
                 >
-                  Pickup location
+                  How would you like to get your bread?
                 </span>
-                <div className="space-y-2">
-                  {LOCATIONS.map((loc) => (
-                    <label
-                      key={loc.name}
-                      className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-colors ${
-                        form.location === loc.name
-                          ? "border-[#a3471f] bg-[#a3471f]/5"
-                          : "border-[#ddc9b0] hover:border-[#d98a3d]"
+                <div className="flex gap-2">
+                  {[
+                    { key: "pickup", label: "Pickup (free)" },
+                    { key: "delivery", label: "Delivery" },
+                  ].map((opt) => (
+                    <button
+                      key={opt.key}
+                      type="button"
+                      aria-pressed={form.fulfillment === opt.key}
+                      onClick={() => setForm({ ...form, fulfillment: opt.key })}
+                      className={`flex-1 px-4 py-2.5 rounded-xl text-sm font-semibold border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3a1c0e] focus-visible:ring-offset-2 ${
+                        form.fulfillment === opt.key
+                          ? "bg-[#3a1c0e] text-white border-[#3a1c0e]"
+                          : "bg-white text-[#3a1c0e] border-[#ddc9b0] hover:border-[#d98a3d]"
                       }`}
                     >
-                      <input
-                        type="radio"
-                        name="location"
-                        value={loc.name}
-                        checked={form.location === loc.name}
-                        onChange={(e) => setForm({ ...form, location: e.target.value })}
-                        className="mt-1 accent-[#a3471f]"
-                      />
-                      <span>
-                        <span className="block font-semibold text-[#3a1c0e] text-sm">
-                          {loc.name}
-                        </span>
-                        <span className="block text-[#8a5733] text-sm">
-                          {loc.address}
-                        </span>
-                      </span>
-                    </label>
+                      {opt.label}
+                    </button>
                   ))}
                 </div>
+                <p className="text-[#8a5733] text-xs mt-1">
+                  Delivery is ${DELIVERY_FEE} — free on orders of $
+                  {FREE_DELIVERY_THRESHOLD}+.
+                </p>
               </div>
 
-              {/* Pickup date (calendar) */}
+              {/* Pickup location (pickup only) */}
+              {form.fulfillment === "pickup" && (
+                <div role="group" aria-labelledby="location-label">
+                  <span
+                    id="location-label"
+                    className="block text-sm font-semibold text-[#3a1c0e] mb-2"
+                  >
+                    Pickup location
+                  </span>
+                  <div className="space-y-2">
+                    {LOCATIONS.map((loc) => (
+                      <label
+                        key={loc.name}
+                        className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-colors ${
+                          form.location === loc.name
+                            ? "border-[#a3471f] bg-[#a3471f]/5"
+                            : "border-[#ddc9b0] hover:border-[#d98a3d]"
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="location"
+                          value={loc.name}
+                          checked={form.location === loc.name}
+                          onChange={(e) => setForm({ ...form, location: e.target.value })}
+                          className="mt-1 accent-[#a3471f]"
+                        />
+                        <span>
+                          <span className="block font-semibold text-[#3a1c0e] text-sm">
+                            {loc.name}
+                          </span>
+                          <span className="block text-[#8a5733] text-sm">
+                            {loc.address}
+                          </span>
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Delivery address (delivery only) */}
+              {form.fulfillment === "delivery" && (
+                <div>
+                  <label
+                    htmlFor="delivery_address"
+                    className="block text-sm font-semibold text-[#3a1c0e] mb-1"
+                  >
+                    Delivery address
+                  </label>
+                  <textarea
+                    id="delivery_address"
+                    required
+                    rows={3}
+                    value={form.delivery_address}
+                    onChange={(e) =>
+                      setForm({ ...form, delivery_address: e.target.value })
+                    }
+                    placeholder="Street address, city, ZIP"
+                    className="w-full border border-[#ddc9b0] rounded-xl px-4 py-2.5 bg-[#fbf1e5] focus:outline-none focus:ring-2 focus:ring-[#d98a3d] resize-none"
+                  />
+                </div>
+              )}
+
+              {/* Pickup/Delivery date (calendar) */}
               <div>
                 <span className="block text-sm font-semibold text-[#3a1c0e] mb-1">
-                  Pickup date
+                  {form.fulfillment === "delivery" ? "Delivery date" : "Pickup date"}
                 </span>
                 <div className="bg-white border border-[#ddc9b0] rounded-xl p-3 inline-block">
                   <DayPicker
@@ -647,18 +725,18 @@ export default function HomePage() {
                   />
                 </div>
                 <p className="text-[#8a5733] text-xs mt-1">
-                  Earliest pickup is {LEAD_DAYS} days out. Grayed-out days are
+                  Earliest date is {LEAD_DAYS} days out. Grayed-out days are
                   unavailable.
                 </p>
               </div>
 
-              {/* Pickup window */}
+              {/* Time window */}
               <div role="group" aria-labelledby="window-label">
                 <span
                   id="window-label"
                   className="block text-sm font-semibold text-[#3a1c0e] mb-2"
                 >
-                  Pickup time
+                  {form.fulfillment === "delivery" ? "Delivery time" : "Pickup time"}
                 </span>
                 <div className="flex gap-2 max-w-sm">
                   {PICKUP_WINDOWS.map((win) => (
@@ -752,16 +830,39 @@ export default function HomePage() {
                   ))}
                 </ul>
               )}
-              <div className="border-t border-[#ecdac4] pt-3 flex justify-between font-extrabold text-[#3a1c0e]">
-                <span>Total{totalItems ? ` (${totalItems})` : ""}</span>
+              {cartItems.length > 0 && (
+                <div className="border-t border-[#ecdac4] pt-3 space-y-1 text-sm">
+                  <div className="flex justify-between text-[#8a5733]">
+                    <span>Subtotal{totalItems ? ` (${totalItems})` : ""}</span>
+                    <span>${subtotal.toFixed(2)}</span>
+                  </div>
+                  {form.fulfillment === "delivery" && (
+                    <div className="flex justify-between text-[#8a5733]">
+                      <span>Delivery</span>
+                      <span>
+                        {deliveryFee === 0 ? "FREE" : `$${deliveryFee.toFixed(2)}`}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
+              <div className="border-t border-[#ecdac4] pt-3 mt-1 flex justify-between font-extrabold text-[#3a1c0e]">
+                <span>Total</span>
                 <span>${total.toFixed(2)}</span>
               </div>
 
               <div className="border-t border-[#ecdac4] mt-4 pt-4 text-sm text-[#8a5733] space-y-1">
-                <p>
-                  <span className="font-semibold text-[#3a1c0e]">Pickup:</span>{" "}
-                  {form.location}
-                </p>
+                {form.fulfillment === "delivery" ? (
+                  <p>
+                    <span className="font-semibold text-[#3a1c0e]">Delivery to:</span>{" "}
+                    {form.delivery_address || "Enter your address"}
+                  </p>
+                ) : (
+                  <p>
+                    <span className="font-semibold text-[#3a1c0e]">Pickup:</span>{" "}
+                    {form.location}
+                  </p>
+                )}
                 <p>
                   {form.pickup_date || "Choose a date"} · {form.pickup_time}
                 </p>

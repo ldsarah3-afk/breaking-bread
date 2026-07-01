@@ -11,9 +11,12 @@ type Order = {
   last_name: string;
   email: string;
   phone: string;
+  fulfillment: string;
   pickup_date: string;
   pickup_time: string;
   location: string;
+  delivery_address: string;
+  delivery_fee: number;
   payment_method: string;
   notes: string;
   items: OrderItem[];
@@ -244,7 +247,15 @@ export default function AdminPage() {
                   <p className="text-[#8a5733]">
                     {o.pickup_date} · {o.pickup_time}
                   </p>
-                  <p className="text-[#8a5733]">{o.location}</p>
+                  {o.fulfillment === "delivery" ? (
+                    <p className="text-[#8a5733]">
+                      <span className="font-semibold text-[#a3471f]">DELIVERY</span>{" "}
+                      → {o.delivery_address}
+                      {o.delivery_fee > 0 && ` (+$${Number(o.delivery_fee).toFixed(2)})`}
+                    </p>
+                  ) : (
+                    <p className="text-[#8a5733]">Pickup: {o.location}</p>
+                  )}
                   <ul className="mt-2 text-[#3a1c0e]">
                     {(o.items ?? []).map((it, i) => (
                       <li key={i}>
