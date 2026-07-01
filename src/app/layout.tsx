@@ -17,9 +17,33 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://breaking-bread.net"),
   title: "Breaking Bread",
   description:
     "Real sourdough — slow-fermented for 48 hours, made from scratch, baked to order in small batches.",
+  openGraph: {
+    title: "Breaking Bread",
+    description:
+      "Real sourdough — slow-fermented for 48 hours, made from scratch, baked to order in small batches.",
+    url: "https://breaking-bread.net",
+    siteName: "Breaking Bread",
+    type: "website",
+    images: [
+      {
+        url: "/bread/sarah-baking-16x9.png",
+        width: 1376,
+        height: 768,
+        alt: "Sarah baking sourdough by hand",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Breaking Bread",
+    description:
+      "Real sourdough — slow-fermented for 48 hours, made from scratch, baked to order in small batches.",
+    images: ["/bread/sarah-baking-16x9.png"],
+  },
 };
 
 export default function RootLayout({
